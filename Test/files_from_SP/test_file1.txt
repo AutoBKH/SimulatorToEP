@@ -1,0 +1,17 @@
+{
+    "id": "54493465-3c8e-a7aa-3f81-23748dc530ac",
+    "name": "Gonzalo",
+    "surname": "Frederick",
+    "email": "naturalistic1860@protonmail.com",
+    "age": 24,
+    "username": "ConcussionCayapa_1916",
+    "occupation": "Sound Technician",
+    "address": {
+        "street": "Dawnview",
+        "city": "Grants Pass",
+        "zipcode": "06803",
+        "country": "United States"
+    },
+    "ip": "238.227.196.138",
+    "credit_card": "2613 1231 7797 1202"
+}
