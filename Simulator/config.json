@@ -1,0 +1,10 @@
+{
+  "read_from": "//freenas/output",
+  "write_to": "http://localhost:5000/",
+  "backup_dir": "./tmp/swap/",
+  "read_freq_sec": 5,
+  "pass_ratio_percentage": 100,
+  "corrupt": false,
+  "read_order_swap": false,
+  "duplicate_messages": true
+}

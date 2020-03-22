@@ -1,0 +1,7 @@
+{
+  "read_freq_sec": 5,
+  "pass_ratio_percentage": 100,
+  "corrupt": false,
+  "read_order_swap": false,
+  "duplicate_messages": true
+}
