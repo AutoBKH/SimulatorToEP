@@ -1,0 +1,17 @@
+{
+    "id": "f3f121e9-090b-c5c1-13e0-52ef5eb3227b",
+    "name": "Jose",
+    "surname": "Hewitt",
+    "email": "verbigeration1855@live.com",
+    "age": 32,
+    "username": "LoupesBottleman_2007",
+    "occupation": "General Practitioner",
+    "address": {
+        "street": "Cesar Chavez On",
+        "city": "Ada",
+        "zipcode": "29685",
+        "country": "United States"
+    },
+    "ip": "205.72.86.73",
+    "credit_card": "3773 365541 12212"
+}

@@ -1,0 +1,10 @@
+{
+  "read_from": "Test/files_from_SP",
+  "write_to": "http://localhost:5050/publish",
+  "backup_dir": "Test/backup",
+  "read_freq_sec": 5,
+  "pass_ratio_percentage": 100,
+  "corrupt": false,
+  "read_order_swap": false,
+  "duplicate_messages": true
+}
