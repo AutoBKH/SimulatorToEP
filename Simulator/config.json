@@ -1,7 +1,7 @@
 {
-  "read_from": "//freenas/output",
-  "write_to": "http://localhost:5000/",
-  "backup_dir": "./tmp/swap/",
+  "read_from": "Test/files_from_SP",
+  "write_to": "http://localhost:5050/publish",
+  "backup_dir": "Test/backup",
   "read_freq_sec": 5,
   "pass_ratio_percentage": 100,
   "corrupt": false,

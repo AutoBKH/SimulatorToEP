@@ -1,8 +1,10 @@
 from flask import Flask
 from flask import request
+from Simulator.configure import Configure
 from Simulator.dir_reader import DirReader
 from pathlib import Path
 import os
+import queue
 
 app = Flask(__name__)
 
@@ -12,40 +14,45 @@ def sanity():
     return 'SimulatorToEP is up and running\n'
 
 
-@app.route('/config', methods=['POST', 'GET'])
 def config():
     if request.method == 'POST':
         if request.is_json:
             print(f"Changing configuration")
+            stop_simulator()
+            Configure.set_configuration(request.json)
+            start_simulator()
+            # Configure.set_running_status(True)
+            # d = DirReader(Configure)
+            # d.start()
             return request.json
         else:
             return str(request.data, "utf-8")
     elif request.method == 'GET':
-        return f"The current configuration is: "
+        conf = Configure.get_configuration()
+        return conf
 
 
-@app.route('/start', methods=['POST'])
 def start_simulator():
-    if request.method == 'POST':
-        return f"Starting simulator"
-    else:
-        return f"Unrecognized request"
+    Configure.set_running_status(True)
+    d = DirReader(Configure)
+    d.start()
+    return f"Starting simulator"
 
 
-@app.route('/stop', methods=['POST'])
 def stop_simulator():
-    if request.method == 'POST':
-        return f"Stopping simulator"
-    else:
-        return f"Unrecognized request"
+    Configure.set_running_status(False)
+    return f"Stopping simulator"
 
 
-@app.route('/restart', methods=['POST'])
 def restart_simulator():
-    if request.method == 'POST':
-        return f"Restarted simulator"
-    else:
-        return f"Unrecognized request"
+    return f"Restarted simulator"
+
+
+app.add_url_rule('/config', view_func=config, methods=['POST', 'GET'])
+app.add_url_rule('/start', view_func=start_simulator, methods=['POST'])
+app.add_url_rule('/stop', view_func=stop_simulator, methods=['POST'])
+app.add_url_rule('/restart', view_func=restart_simulator, methods=['POST'])
+
 
 
 # if __name__ == "__main__":
