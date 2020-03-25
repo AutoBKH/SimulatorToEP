@@ -14,6 +14,7 @@ from Simulator.configure import Configure
 from Simulator.event import Event
 
 # TODO 0. See other TODOs in code
+# TODO 1. Add logging
 
 
 class DirReader(threading.Thread):
@@ -70,7 +71,7 @@ class DirReader(threading.Thread):
             time.sleep(self.read_freq_sec)
 
     def is_send_file(self):
-        return random.random() <= (self._pass_ratio / 100)
+        return random() <= (self._pass_ratio / 100)
 
     def get_dir_list_ordered(self):
         dir_list_ordered = []
