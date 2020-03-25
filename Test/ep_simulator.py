@@ -37,7 +37,19 @@ def about():
     return "about page"
 
 
-ep_simulator.add_url_rule('/', 'about', about)
+def send_event():
+    if request.is_json:
+        print(f"Changing configuration")
+        # return request.json
+        return f"Received send_event"
+    else:
+        # return str(request.data, "utf-8")
+        return f"Received send_event"
+
+
+ep_simulator.add_url_rule('/config', view_func=config, methods=['POST', 'GET'])
+ep_simulator.add_url_rule('/about', view_func=about, methods=['POST', 'GET'])
+ep_simulator.add_url_rule('/send_event', view_func=send_event, methods=['POST'])
 
 
 @ep_simulator.route('/start', methods=['POST'])

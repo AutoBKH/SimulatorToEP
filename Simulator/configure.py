@@ -6,9 +6,9 @@ import os
 #   "backup_dir": "./tmp/swap/",
 #   "read_freq_sec": 5,
 #   "pass_ratio_percentage": 100,
-#   "corrupt": false,
+#   "corrupt_message": false,
 #   "read_order_swap": false,
-#   "duplicate_messages": true|
+#   "duplicate_message": true|
 
 
 class Configure:
