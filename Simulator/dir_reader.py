@@ -6,6 +6,7 @@ import uuid
 import time
 import random
 import pickle
+import jsonpickle
 from requests import post
 from pathlib import Path
 from http import HTTPStatus
@@ -15,7 +16,7 @@ from Simulator.event import Event
 # TODO 0. See other TODOs in code
 # TODO 1. Make code defensive
 # TODO 2. Implement pickle packaging of message to EP
-#
+
 
 class DirReader(threading.Thread):
     def __init__(self, config):
@@ -102,5 +103,6 @@ class DirReader(threading.Thread):
 
     def prepare_message_to_ep(self, message):
         event = Event(send_to="enpoint_1", message=message)
-        pickled_message = pickle.dumps(event)
+        # pickled_message = pickle.dumps(event)
+        pickled_message = jsonpickle.encode(event)
         return pickled_message
