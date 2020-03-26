@@ -10,6 +10,8 @@ In order to run with simulator locally:
 2. verify that "backup_dir" exist
 3. run the local_main.py. 
 
+In order to change simulator's configuration, POST to config endpoint. In order for the new configuration to take effect, STOP (before) and START (after) the simulator.
+
 RESTFUL commands:
 
 GET  http://localhost:5000/config
@@ -21,9 +23,9 @@ POST http://localhost:5000/config
   "backup_dir": "Test/backup2",\
   "read_freq_sec": 5,\
   "pass_ratio_percentage": 100,\
-  "corrupt": false,\
+  "corrupt_message": false,\
   "read_order_swap": false,\
-  "duplicate_messages": true\
+  "duplicate_message": true\
 }
 
 POST http://localhost:5000/start
