@@ -2,7 +2,7 @@
   "read_from": "Test/files_from_SP",
   "write_to": "http://localhost:5050/send_event",
   "backup_dir": "Test/backup",
-  "read_freq_sec": 5,
+  "read_freq_sec": 8,
   "pass_ratio_percentage": 100,
   "corrupt_message": false,
   "read_order_swap": false,

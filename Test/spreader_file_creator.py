@@ -1,9 +1,9 @@
 from mimesis.schema import Field, Schema
 from mimesis.enums import FileType
 from mimesis import File
-import json
 from pathlib import Path
 from random import randint
+import json
 import time
 
 

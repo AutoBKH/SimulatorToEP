@@ -10,8 +10,7 @@ In order to run with simulator locally:
 2. verify that "backup_dir" exist
 3. run the local_main.py. 
 
-In order to change simulator's configuration, POST to config endpoint. The simulator will finish processing last read batch of files 
-and will restart itself with the new configuration. NO NEED TO STOP AND START.
+In order to change simulator's configuration, POST to config endpoint. In order for the new configuration to take effect, STOP (before) and START (after) the simulator.
 
 RESTFUL commands:
 
