@@ -16,6 +16,14 @@ from Simulator.event import Event
 # TODO 0. See other TODOs in code
 # TODO 1. Add logging
 # TODO 2. Should set max to files read each time get_dir_list_ordered?
+# TODO 3. if file content with error, send to error specific directory
+
+
+def prepare_message_to_ep(message):
+    # TODO - change the content of the event.
+    event = Event(send_to="enpoint_" + str(randint(0, 100)), message=message)
+    pickled_message = jsonpickle.encode(event)
+    return pickled_message
 
 
 class DirReader(threading.Thread):
@@ -24,6 +32,7 @@ class DirReader(threading.Thread):
         self._read_from = config.get_configuration().get("read_from")
         self._write_to = config.get_configuration().get("write_to")
         self._backup_dir = config.get_configuration().get("backup_dir")
+        self._errors_dir = config.get_configuration().get("errors_dir")
         self._corrupt_message = config.get_configuration().get("corrupt_message")
         self.read_freq_sec = config.get_configuration().get("read_freq_sec")
         self._reverse_files = config.get_configuration().get("read_order_swap")
@@ -37,25 +46,26 @@ class DirReader(threading.Thread):
         guid = uuid.uuid4()
         while Configure.get_running_status():
             try:
-                # dir_list_ordered = self.get_dir_list_ordered()
-
                 for file in self.get_dir_list_ordered():
                     print(f"Found new file {file}. {guid}")
                     try:
                         if self.is_send_file():
                             contents = self.prepare_file_content(file)
-                            response = post(url, data=contents)
-                            if response.status_code == HTTPStatus.OK:
-                                print(f"Moving file {file} to {self._backup_dir}. {guid}")
-                                self.move_file(file)
-                                print(response.json())
-                            if self._duplicate_message:
+                            if contents is None:
+                                self.move_file(file, self._errors_dir)
+                            else:
                                 response = post(url, data=contents)
                                 if response.status_code == HTTPStatus.OK:
-                                    print(f"Sent duplicated message")
+                                    print(f"Moving file {file} to {self._backup_dir}. {guid}")
+                                    self.move_file(file, self._backup_dir)
                                     print(response.json())
+                                if self._duplicate_message:
+                                    response = post(url, data=contents)
+                                    if response.status_code == HTTPStatus.OK:
+                                        print(f"Sent duplicated message")
+                                        print(response.json())
                         else:
-                            self.move_file(file)
+                            self.move_file(file, self._backup_dir)
                             print(f"Skip...Moving file {file} to {self._backup_dir}. {guid}")
                     except Exception as e:
                         print(f"Exception occurred {e}")
@@ -95,28 +105,29 @@ class DirReader(threading.Thread):
         # TODO - add corruption
         return message
 
-    def prepare_message_to_ep(self, message):
-        # TODO - change the content of the event.
-        event = Event(send_to="enpoint_" + str(randint(0, 100)), message=message)
-        pickled_message = jsonpickle.encode(event)
-        return pickled_message
-
     def prepare_file_content(self, file):
+        contents = None
         f = open(str(file), "r")
-        contents = json.loads(f.read())
-        f.close()
-        if self._corrupt_message:
-            contents = self.please_corrupt_message(contents)
-        contents = self.prepare_message_to_ep(contents)
+        try:
+            contents = json.loads(f.read())
+        except ValueError as e:
+            print(f"Content is not a JSON")
+        finally:
+            f.close()
+
+        if contents is not None:
+            if self._corrupt_message:
+                contents = self.please_corrupt_message(contents)
+            contents = prepare_message_to_ep(contents)
         return contents
 
-    def move_file(self, file):
+    def move_file(self, file, dest_dir):
         """
         Before moving file, check if exists and delete
         """
         try:
-            if os.path.exists(self._backup_dir + "/" + str(file.name)):
-                os.remove(self._backup_dir + "/" + str(file.name))
-            shutil.move(str(file), self._backup_dir)
+            if os.path.exists(dest_dir + "/" + str(file.name)):
+                os.remove(dest_dir + "/" + str(file.name))
+            shutil.move(str(file), dest_dir)
         except Exception as e:
             print(f"Exception occurred {e}")
