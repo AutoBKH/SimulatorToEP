@@ -5,13 +5,13 @@ ep_simulator = Flask(__name__)
 
 
 def is_alive():
-    return 'EP Simulator is_alive\n'
+    return jsonify('EP Simulator is_alive')
 
 
 def send_event():
     if request.is_json:
         print(f"called send_event")
-        return request.json
+        return jsonify(request.json)
     else:
         unpickle = jsonpickle.decode(request.data)
         print(unpickle)
@@ -22,11 +22,11 @@ def send_event():
 def publish():
     if request.method == 'POST':
         if request.is_json:
-            return request.json
+            return jsonify(request.json)
         else:
-            return str(request.data, "utf-8")
+            return jsonify(str(request.data, "utf-8"))
     else:
-        return f"called publish with {request.method}"
+        return jsonify("called publish with {request.method}")
 
 
 ep_simulator.add_url_rule('/', view_func=is_alive)

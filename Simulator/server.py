@@ -1,6 +1,5 @@
 import os
-from flask import Flask
-from flask import request
+from flask import Flask, request, jsonify
 from pathlib import Path
 from Simulator.configure import Configure
 from Simulator.dir_reader import DirReader
@@ -9,7 +8,7 @@ app = Flask(__name__)
 
 
 def is_alive():
-    return 'SimulatorToEP is up and running\n'
+    return jsonify('SimulatorToEP is up and running')
 
 
 def config():
@@ -18,27 +17,28 @@ def config():
             print(f"Changing configuration")
             Configure.set_configuration(request.json)
             return request.json
-        else:
-            return str(request.data, "utf-8")
+        # else:
+        #     Configure.set_configuration(jsonify(request.data))
+        #     return str(request.data, "utf-8")
     elif request.method == 'GET':
         conf = Configure.get_configuration()
-        return conf
+        return jsonify(conf)
 
 
 def start_simulator():
     Configure.set_running_status(True)
     d = DirReader(Configure)
     d.start()
-    return f"Starting simulator"
+    return jsonify(f"Starting simulator")
 
 
 def stop_simulator():
     Configure.set_running_status(False)
-    return f"Stopping simulator"
+    return jsonify(f"Stopping simulator")
 
 
 def restart_simulator():
-    return f"Restarted simulator"
+    return jsonify("Restarted simulator")
 
 
 app.add_url_rule('/', view_func=is_alive)
