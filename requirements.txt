@@ -3,3 +3,4 @@ watchdog
 requests
 jsonpickle
 mimesis
+pytest
