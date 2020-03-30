@@ -1,5 +1,4 @@
 flask
-watchdog
 requests
 jsonpickle
 mimesis

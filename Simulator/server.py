@@ -41,12 +41,24 @@ def restart_simulator():
     return jsonify("Restarted simulator")
 
 
+def shutdown():
+    """
+    Shuts down the server, only active when running the server locally
+    """
+    shutdown_function = request.environ.get("werkzeug.server.shutdown")
+    if shutdown_function is None:
+        raise ValueError("Cannot shutdown! Server is not running with werkzeug")
+    shutdown_function()
+    return "Server shutting down"
+
+
 app.add_url_rule('/', view_func=is_alive)
 app.add_url_rule('/is_alive', view_func=is_alive)
 app.add_url_rule('/config', view_func=config, methods=['POST', 'GET'])
 app.add_url_rule('/start', view_func=start_simulator, methods=['POST'])
 app.add_url_rule('/stop', view_func=stop_simulator, methods=['POST'])
 app.add_url_rule('/restart', view_func=restart_simulator, methods=['POST'])
+app.add_url_rule("/shutdown", "shutdown", view_func=shutdown, methods=["POST"])
 
 if __name__ == "__main__":
     d = DirReader(Path(os.curdir + "/Test/files_from_SP/"), 1)

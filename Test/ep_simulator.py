@@ -29,10 +29,22 @@ def publish():
         return jsonify("called publish with {request.method}")
 
 
+def shutdown():
+    """
+    Shuts down the server, only active when running the server locally
+    """
+    shutdown_function = request.environ.get("werkzeug.server.shutdown")
+    if shutdown_function is None:
+        raise ValueError("Cannot shutdown! Server is not running with werkzeug")
+    shutdown_function()
+    return "Server shutting down"
+
+
 ep_simulator.add_url_rule('/', view_func=is_alive)
 ep_simulator.add_url_rule('/is_alive', view_func=is_alive)
 ep_simulator.add_url_rule('/send_event', view_func=send_event, methods=['POST'])
 ep_simulator.add_url_rule('/publish', view_func=publish, methods=['POST'])
+ep_simulator.add_url_rule("/shutdown", "shutdown", view_func=shutdown, methods=["POST"])
 
 
 if __name__ == "__main__":
