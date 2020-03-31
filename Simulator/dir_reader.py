@@ -5,7 +5,6 @@ import shutil
 import uuid
 import time
 from random import random, randint
-import pickle
 import jsonpickle
 from requests import post
 from pathlib import Path

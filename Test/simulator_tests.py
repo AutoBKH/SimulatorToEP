@@ -16,6 +16,9 @@ from Simulator.dir_reader import DirReader
 from Simulator.server import app
 from Test.ep_simulator import ep_simulator
 
+sim_url = "http://localhost:5000"
+sim_ep_url = "http://localhost:5050"
+
 
 @pytest.fixture(scope="session", autouse=True)
 def custom_setup():
@@ -32,6 +35,10 @@ def custom_setup():
     t2 = threading.Thread(target=start_simulator)
     t2.start()
     yield print("Start of test")
+    response = post(url=sim_url + "/shutdown")
+    assert response.status_code == HTTPStatus.OK, print(f"response.status is {response.status_code}")
+    response = post(url=sim_ep_url + "/shutdown")
+    assert response.status_code == HTTPStatus.OK, print(f"response.status is {response.status_code}")
     Configure.set_running_status(False)
     # m1.kill()
     # m2.kill()

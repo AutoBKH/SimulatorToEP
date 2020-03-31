@@ -110,6 +110,9 @@ ENV/
 env.bak/
 venv.bak/
 .idea
+Test/backup/*
+Test/backup2/*
+Test/errors/*
 
 # Spyder project settings
 .spyderproject
