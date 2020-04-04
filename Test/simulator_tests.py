@@ -88,6 +88,7 @@ def test_sanity():
         "errors_dir": "Test/errors",
         "read_freq_sec": 8,
         "pass_ratio_percentage": 0,
+        "number_of_duplications": 1,
         "corrupt_message": False,
         "read_order_swap": False,
         "duplicate_message": False
@@ -109,6 +110,7 @@ def test_configuration_check(execution_number):
     errors_dir = p.users_folder()
     read_freq_seq = randint(0, 9999)
     pass_ratio_percentage = randint(0, 101)
+    number_of_duplications = randint(1, 11)
     corrupt_message = d.boolean()
     read_order_swap = d.boolean()
     duplicate_message = d.boolean()
@@ -119,6 +121,7 @@ def test_configuration_check(execution_number):
         "errors_dir": errors_dir,
         "read_freq_sec": read_freq_seq,
         "pass_ratio_percentage": pass_ratio_percentage,
+        "number_of_duplications": number_of_duplications,
         "corrupt_message": corrupt_message,
         "read_order_swap": read_order_swap,
         "duplicate_message": duplicate_message

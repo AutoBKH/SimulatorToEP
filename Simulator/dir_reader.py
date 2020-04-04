@@ -37,6 +37,7 @@ class DirReader(threading.Thread):
         self._reverse_files = config.get_configuration().get("read_order_swap")
         self._duplicate_message = config.get_configuration().get("duplicate_message")
         self._pass_ratio = config.get_configuration().get("pass_ratio_percentage")
+        self._number_of_duplications = config.get_configuration().get("number_of_duplications")
         self._guid = uuid.uuid4()
         print(f"Thread starts id {self._guid}")
 
@@ -58,11 +59,12 @@ class DirReader(threading.Thread):
                                     print(f"Moving file {file} to {self._backup_dir}. {guid}")
                                     self.move_file(file, self._backup_dir)
                                     print(response.json())
-                                if self._duplicate_message:
+                                for n in range(1, self._number_of_duplications):
                                     response = post(url, data=contents)
                                     if response.status_code == HTTPStatus.OK:
                                         print(f"Sent duplicated message")
                                         print(response.json())
+                                    time.sleep(0.5)
                         else:
                             self.move_file(file, self._backup_dir)
                             print(f"Skip...Moving file {file} to {self._backup_dir}. {guid}")
