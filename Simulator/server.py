@@ -1,8 +1,8 @@
-import os
+import time
 from flask import Flask, request, jsonify
-from pathlib import Path
 from Simulator.configure import Configure
 from Simulator.dir_reader import DirReader
+from http import HTTPStatus
 
 app = Flask(__name__)
 
@@ -17,18 +17,17 @@ def config():
             print(f"Changing configuration")
             Configure.set_configuration(request.json)
             return request.json
-        # else:
-        #     Configure.set_configuration(jsonify(request.data))
-        #     return str(request.data, "utf-8")
+        return jsonify("Request not JSON", HTTPStatus.BAD_REQUEST)
     elif request.method == 'GET':
         conf = Configure.get_configuration()
         return jsonify(conf)
+    else:
+        return jsonify("Invalid request", HTTPStatus.BAD_REQUEST)
 
 
 def start_simulator():
     Configure.set_running_status(True)
-    d = DirReader(Configure)
-    d.start()
+    DirReader(Configure).start()
     return jsonify(f"Starting simulator")
 
 
@@ -38,6 +37,9 @@ def stop_simulator():
 
 
 def restart_simulator():
+    Configure.set_running_status(False)
+    time.sleep(1)
+    Configure.set_running_status(True).start()
     return jsonify("Restarted simulator")
 
 
@@ -61,8 +63,8 @@ app.add_url_rule('/restart', view_func=restart_simulator, methods=['POST'])
 app.add_url_rule("/shutdown", "shutdown", view_func=shutdown, methods=["POST"])
 
 if __name__ == "__main__":
-    d = DirReader(Path(os.curdir + "/Test/files_from_SP/"), 1)
-    d.start()
+    configuration = Configure()
+    DirReader(configuration).start()
     app.run(debug=True, host='0.0.0.0', port=5000)
 
 

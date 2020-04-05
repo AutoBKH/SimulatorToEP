@@ -7,6 +7,5 @@
   "pass_ratio_percentage": 100,
   "number_of_duplications": 1,
   "corrupt_message": false,
-  "read_order_swap": false,
-  "duplicate_message": false
+  "read_order_swap": false
 }

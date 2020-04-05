@@ -15,8 +15,8 @@ def send_event():
     else:
         unpickle = jsonpickle.decode(request.data)
         print(unpickle)
-        return jsonify(message=unpickle["message"],
-                       send_to=unpickle["send_to"])
+        return jsonify(message=unpickle.message,
+                       send_to=unpickle.send_to)
 
 
 def publish():

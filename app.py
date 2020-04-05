@@ -5,8 +5,7 @@ from Simulator.server import app
 
 def main():
     configuration = Configure()
-    d = DirReader(configuration)
-    d.start()
+    DirReader(configuration).start()
     app.run(debug=False, host='0.0.0.0', port=5000)
 
 
