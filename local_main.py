@@ -14,8 +14,9 @@ def local_main():
     configuration = Configure()
     d = DirReader(configuration)
     d.start()
-    # Thread(target=start_ep_simulator).start()
-    Thread(target=create_dummy_ack, args=("Test/files_from_SP/", 5,)).start()
+    Thread(target=start_ep_simulator).start()
+    # create_dummy_ack("Test/files_from_SP/", loops=2, num_files=10, interval_sec=61)
+    Thread(target=create_dummy_ack, args=("Test/files_from_SP/", 5, 10, 10)).start()
     app.run(debug=False, host='0.0.0.0', port=5000)
 
 
